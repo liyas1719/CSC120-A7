@@ -8,14 +8,22 @@ public class Library extends Building {
   private ArrayList<Integer> cardholders; // makes a list of passengers
   private boolean hasElevator;
 
-   
+  /**
+   * constructor for library
+   * @param name name of library
+   * @param address street address of library
+   * @param hasElevator boolean indicating whether or not library has an elevator
+   */ 
   public Library(String name, String address, boolean hasElevator) {
       this.cardholders = new ArrayList<>();
       this.hasElevator = hasElevator;
       System.out.println("You have built a library: 📖");
-      //Hashtable<String, boolean> collection = new Hashtable<>();rs
     }
 
+    /**
+     * accessor for hasElevator
+     * @return hasElevator
+     */
     public boolean getHasElevator() {
       return hasElevator;
     }
@@ -45,7 +53,7 @@ public class Library extends Building {
     }
 
     /**
-     * method to check out a book from the library, as long as library has it and it hasn't already been checked out
+     * overlaoded method to check out a book from the library, as long as library has it and it hasn't already been checked out
      * @param title title of the book to be checked out
      */
     public void checkOut(String title) {
@@ -59,6 +67,10 @@ public class Library extends Building {
       collection.put(title, false);
     }
 
+    /**
+     * overloaded method to check out a book from the library, as long as library has it and it hasn't already been checked out and checks card number of person, or creates a new card number as needed
+     * @param title title of the book to be checked out
+     */
     public void checkOut(String title, Integer CardNumber) {
       if (this.cardholders.contains(CardNumber)) {
         System.out.println("Welcome back");
@@ -76,59 +88,71 @@ public class Library extends Building {
       collection.put(title, false);
     }
 
+    /**
+     * overloaded method to return a book as long as the library has it and it hasn't already been returned
+     * @param title title of the book to be returned
+     */
     public void returnBook(String title) {
-      if (collection.containsKey(title)) {
-        if (collection.get(title).equals(false)) {
-          collection.remove(title);
-          collection.put(title, true);
-        } else {
-          System.out.println("book already returned");
-        } 
-      } else {
-        System.out.println("book not in library");
+      if (!collection.containsKey(title)) {
+        throw new RuntimeException("Book not in library.");
       }
+      if (collection.get(title).equals(true)) {
+        throw new RuntimeException("Book is already returned.");
+      }
+      collection.remove(title);
+      collection.put(title, true);
     }
 
+    /**
+     * overloaded method to return a book as long as the library has it and it hasn't already been returned, keeping track of card numbers and creating new ones where needed
+     * @param title title of the book to be returned
+     */
     public void returnBook(String title, Integer CardNumber) {
       if (this.cardholders.contains(CardNumber)) {
         System.out.println("Welcome back");
       } else {
         System.out.println("Please enter valid Library Card Number");
       }
-      if (collection.containsKey(title)) {
-        if (collection.get(title).equals(false)) {
-          collection.remove(title);
-          collection.put(title, true);
-        } else {
-          System.out.println("book already returned");
-        } 
-      } else {
-        System.out.println("book not in library");
+      if (!collection.containsKey(title)) {
+        throw new RuntimeException("Book not in library.");
       }
+      if (collection.get(title).equals(true)) {
+        throw new RuntimeException("Book is already returned.");
+      }
+      collection.remove(title);
+      collection.put(title, true);
     }
     
+    /**
+     * method to indicate whether or not the library contains a book
+     * @param title title of book that is being looked up
+     * @return a boolean indicating whether or not the library has the book
+     */
     public boolean containsTitle(String title) { // returns true if the title appears as a key in the Libary's collection, false otherwise 
-      if (collection.containsKey(title)) {
-        return true;
-      } else {
-        return false;
-      }
-  }
+      return collection.containsKey(title);
+    }
     
+    /**
+     * method to indicate whether or not the book is available
+     * @param title title of book whose availability is being checked
+     * @return boolean indicating whether or not the title is available
+     */
     public boolean isAvailable(String title) { // returns true if the title is currently available, false otherwise
-      if (collection.get(title).equals(true)) {
-          return true;
-        } else {
-          return false;
-        }
-      }
+      return collection.get(title);
+    }
 
-    public void printCollection() { // prints out the entire collection in an easy-to-read way (including checkout status)
+    /**
+     * overloaded method to print out the entire collection of books in the library
+     */
+    public void printCollection() {
       for (String key : collection.keySet()) {
         System.out.println("Key: " + key + ", Value: " + collection.get(key));
-    }
+      }
     }
     
+    /**
+     * overloaded method to print out the entire collection of books in the library based on availability
+     */
     public void printCollection(boolean Availability) {
       for (String key : collection.keySet()) {
         if (collection.get(key) == Availability) {
@@ -137,11 +161,18 @@ public class Library extends Building {
       }
     }
 
+    /**
+    * method to print options in the house
+    */
     @Override
     public void showOptions() {
         System.out.println("Available options at " + this.name + ":\n + enter() \n + exit() \n + goUp() \n + goDown()\n + goToFloor(n)\n + addTitle()\n + removeTitle()\n + checkOut()\n + returnBook()\n + containsTitle()\n + isAvailable()\n + printCollection()");
     }
 
+    /**
+    * method that allows user to travel between floors
+    */
+    @Override
     public void goToFloor(int floorNum) {
       if (this.activeFloor == -1) {
           throw new RuntimeException("You are not inside this Building. Must call enter() before navigating between floors.");
@@ -158,6 +189,7 @@ public class Library extends Building {
 
 
     public static void main(String[] args) {
+      
     }
   
   }

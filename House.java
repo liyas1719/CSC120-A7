@@ -38,7 +38,7 @@ public class House extends Building {
   }
 
   /**
-  * method to move in a person, as long as they don't already live in the house
+  * overloaded method to move in a person, as long as they don't already live in the house
   * @param name name of person trying to move in
   */
   public void moveIn(String name) {
@@ -49,8 +49,9 @@ public class House extends Building {
   }
 
   /**
-  * method to move in a person, as long as they don't already live in the house
-  * @param name name of person trying to move in
+  * overloaded method to move in a person given their full name, as long as they don't already live in the house
+  * @param firstname first name of person trying to move in
+  * @param lastname last name of person trying to move in
   */
   public void moveIn(String firstname, String lastname) {
     String fullname = firstname + " " + lastname;
@@ -61,11 +62,11 @@ public class House extends Building {
   }
 
   /**
-  * method to move out a person, as long as they currently live in the house
+  * overloaded method to move out a person, as long as they currently live in the house
   * @param name name of person trying to move out
   * @return name of person who sucessfully moved out
   */
-  public String moveOut(String name) { // return the name of the person who moved out
+  public String moveOut(String name) {
     if (!residents.contains(name)) {
       throw new RuntimeException("Cannot move out, as person is not moved in yet.");
     }
@@ -75,10 +76,11 @@ public class House extends Building {
   
   /**
   * method to move out a person, as long as they currently live in the house
-  * @param name name of person trying to move out
-  * @return name of person who sucessfully moved out
+  * @param firstname first name of person trying to move out
+  * @param lastname last name of person trying to move out
+  * @return full name of person who sucessfully moved out
   */
-  public String moveOut(String firstname, String lastname) { // return the name of the person who moved out
+  public String moveOut(String firstname, String lastname) {
     String fullname = firstname + " " + lastname;
     if (!residents.contains(fullname)) {
       throw new RuntimeException("Cannot move out, as person is not moved in yet.");
@@ -96,11 +98,18 @@ public class House extends Building {
     return residents.contains(person);
   }
 
+  /**
+   * method to print options in the house
+   */
   @Override
   public void showOptions() {
         System.out.println("Available options at " + this.name + ":\n + enter() \n + exit() \n + goUp() \n + goDown()\n + goToFloor(n)\n + moveIn()\n + moveOut()\n + isResident()");
   } 
   
+  /**
+   * method that allows user to travel between floors
+   */
+  @Override
   public void goToFloor(int floorNum) {
     if (this.activeFloor == -1) {
         throw new RuntimeException("You are not inside this Building. Must call enter() before navigating between floors.");
